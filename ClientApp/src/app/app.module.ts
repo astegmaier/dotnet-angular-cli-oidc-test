@@ -11,8 +11,10 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
-import { AuthGuard } from './auth-guard.guard';
+import { AuthGuard } from './guards/auth-guard.guard';
 import { CallbackComponent } from './callback/callback.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './interceptors/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -29,13 +31,21 @@ import { CallbackComponent } from './callback/callback.component';
     FormsModule,
     OAuthModule.forRoot(),
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: '', component: HomeComponent },
       { path: 'counter', component: CounterComponent, canActivate: [AuthGuard] },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard] },
-      { path: 'callback', component: CallbackComponent, pathMatch: 'full' }
+      { path: 'callback', component: CallbackComponent, pathMatch: 'full' },
+      { path: '**', redirectTo: '', pathMatch: 'full' }
     ])
   ],
-  providers: [AuthGuard],
+  providers: [
+    AuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

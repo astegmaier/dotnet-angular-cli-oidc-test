@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using IdentityServer4.AccessTokenValidation;
 
 namespace dotnet_angular_cli
 {
@@ -25,6 +26,14 @@ namespace dotnet_angular_cli
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(options => 
+                {
+                    options.Authority = "https://demo.identityserver.io";
+                    options.RequireHttpsMetadata = true;
+                    options.ApiName = "api";
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +50,8 @@ namespace dotnet_angular_cli
 
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
