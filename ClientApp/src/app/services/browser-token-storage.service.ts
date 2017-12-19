@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { OAuthStorage } from 'angular-oauth2-oidc';
+import { platform } from 'os';
 
 @Injectable()
 export class BrowserTokenStorageService implements OAuthStorage {
