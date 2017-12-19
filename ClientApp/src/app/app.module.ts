@@ -15,6 +15,8 @@ import { AuthGuard } from './guards/auth-guard.guard';
 import { CallbackComponent } from './callback/callback.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './interceptors/token.interceptor';
+import { OAuthStorage } from 'angular-oauth2-oidc';
+import { BrowserTokenStorageService } from './services/browser-token-storage.service';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,8 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    }
+    },
+    { provide: OAuthStorage, useClass: BrowserTokenStorageService }
   ],
   bootstrap: [AppComponent]
 })
