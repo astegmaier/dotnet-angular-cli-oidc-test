@@ -17,6 +17,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { OAuthStorage } from 'angular-oauth2-oidc';
 import { BrowserTokenStorageService } from './services/browser-token-storage.service';
+import { BrowserTransferStateModule } from '@angular/platform-browser';
+import { TransferHttpCacheModule } from '@nguniversal/common';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,8 @@ import { BrowserTokenStorageService } from './services/browser-token-storage.ser
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
+    TransferHttpCacheModule,
+    BrowserTransferStateModule,
     FormsModule,
     OAuthModule.forRoot(),
     RouterModule.forRoot([
